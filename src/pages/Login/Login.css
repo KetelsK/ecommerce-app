@@ -1,0 +1,20 @@
+.form-container {
+    padding: 28px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.forgot-password {
+    display: block;
+    text-align: center;
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.forgot-password:hover {
+    opacity: 0.5;
+}

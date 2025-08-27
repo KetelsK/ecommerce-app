@@ -1,6 +1,6 @@
 import { create } from 'domain';
 import React, { useEffect, useState } from 'react'
-import { createProduct, getProductById, updateProduct } from '../../services/api';
+import { createProduct, getProductById, updateProduct } from '../../services/product-api';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
 
