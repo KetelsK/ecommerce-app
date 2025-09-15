@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import productApi, { deleteProduct, getProducts } from '../services/product-api'
+import React from 'react'
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 import Products from './Products';

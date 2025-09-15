@@ -1,11 +1,4 @@
-import axios from 'axios';
-
-const api = axios.create({
-    baseURL: 'http://localhost:3000', // Replace with your API base URL
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+import { api } from "./base-api";
 
 export const getProducts = async () => {
     try {
