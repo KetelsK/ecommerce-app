@@ -3,6 +3,13 @@ import Button from '../../components/Button'
 import './Login.css'
 import api from '../../services/product-api'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../store'
+import { login } from '../../store/authSlice'
+
+type LoginResponse = {
+    access_token: string;
+}
 
 type Props = {}
 
@@ -12,17 +19,21 @@ const Login = (props: Props) => {
     const [rememberMe, setRememberMe] = useState(false);
     const [isRegisterForm, setIsRegisterForm] = useState(false);
 
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+    const dispatch = useDispatch<AppDispatch>();
+
     const navigate = useNavigate();
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
 
         // Handle login 
-        api.post('/auth/login',
+        api.post<LoginResponse>('/auth/login',
             {
                 email, password
             }
-        ).then(() => {
+        ).then((result) => {
+            dispatch(login(result.data.access_token));
             navigate('/');
         }).catch(error => {
             console.log(error)
@@ -33,11 +44,12 @@ const Login = (props: Props) => {
         e.preventDefault();
 
         // Handle registration
-        api.post('/auth/register',
+        api.post<LoginResponse>('/auth/register',
             {
                 email, password
             }
-        ).then(() => {
+        ).then((result) => {
+            dispatch(login(result.data.access_token));
             navigate('/');
         }).catch(error => {
             console.log(error)
