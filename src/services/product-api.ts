@@ -1,5 +1,11 @@
 import { api } from "./base-api";
 
+export interface Product {
+    id?: number | undefined;
+    name: string;
+    price: number | '';
+}
+
 export const getProducts = async () => {
     try {
         const response = await api.get('/product');
@@ -9,7 +15,7 @@ export const getProducts = async () => {
         throw error;
     }
 };
-export const getProductById = async (id: string) => {
+export const getProductById = async (id: number) => {
     try {
         const response = await api.get(`/product/${id}`);
         return response.data;
@@ -18,7 +24,7 @@ export const getProductById = async (id: string) => {
         throw error;
     }
 };
-export const createProduct = async (product: any) => {
+export const createProduct = async (product: Product) => {
     try {
         const response = await api.post('/product', product);
         return response.data;
@@ -27,7 +33,7 @@ export const createProduct = async (product: any) => {
         throw error;
     }
 };
-export const updateProduct = async (id: string, product: any) => {
+export const updateProduct = async (id: number, product: Product) => {
     try {
         const response = await api.put(`/product/${id}`, product);
         return response.data;
@@ -36,7 +42,7 @@ export const updateProduct = async (id: string, product: any) => {
         throw error;
     }
 };
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: number) => {
     try {
         const response = await api.delete(`/product/${id}`);
         return response.data;

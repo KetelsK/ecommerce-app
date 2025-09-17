@@ -3,23 +3,20 @@ import Button from '../../components/Button'
 import './Login.css'
 import api from '../../services/product-api'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../store'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../store'
 import { login } from '../../store/authSlice'
 
 type LoginResponse = {
     access_token: string;
 }
 
-type Props = {}
-
-const Login = (props: Props) => {
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const [isRegisterForm, setIsRegisterForm] = useState(false);
 
-    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
@@ -70,7 +67,7 @@ const Login = (props: Props) => {
                 <input type="password" className='form-control' id="password" name="password" required onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className="form-check mt-2 cursor-pointer">
-                <input className="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault" />
+                <input className="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
                 <label className="form-check-label cursor-pointer" htmlFor="flexCheckDefault">
                     Se souvenir de moi
                 </label>

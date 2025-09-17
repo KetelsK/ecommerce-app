@@ -1,19 +1,11 @@
-import { create } from 'domain';
 import React, { useEffect, useState } from 'react'
-import { createProduct, getProductById, updateProduct } from '../../services/product-api';
+import { createProduct, getProductById, Product, updateProduct } from '../../services/product-api';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
 
 
-interface FormData {
-    name: string;
-    price: number | '';
-}
-
-type Props = {}
-
-const ProductForm = (props: Props) => {
-    const [form, setForm] = useState<FormData>({ name: '', price: '' })
+const ProductForm = () => {
+    const [form, setForm] = useState<Product>({ name: '', price: '' })
     const [errors, setErrors] = useState<{ name?: string, price?: string }>({});
     const { id: productId } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -21,7 +13,7 @@ const ProductForm = (props: Props) => {
 
     useEffect(() => {
         if (isEditMode && productId) {
-            getProductById(productId).then(product => {
+            getProductById(Number(productId)).then(product => {
                 setForm({
                     name: product.name,
                     price: product.price
@@ -61,13 +53,13 @@ const ProductForm = (props: Props) => {
         }
 
         if (isEditMode) {
-            updateProduct(productId, form).then(response => {
+            updateProduct(Number(productId), form).then(() => {
                 navigate('/');
             }).catch(error => {
                 alert('Error updating product: ' + error.message);
             });
         } else {
-            createProduct(form).then(response => {
+            createProduct(form).then(() => {
                 navigate('/');
             }).catch(error => {
                 alert('Error creating product: ' + error.message);

@@ -10,9 +10,7 @@ const h1Style: React.CSSProperties = {
   marginBottom: '20px'
 };
 
-type Props = {}
-
-const Header = (props: Props) => {
+const Header = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
 

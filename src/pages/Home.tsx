@@ -7,15 +7,7 @@ const buttonStyle: React.CSSProperties = {
     marginBottom: '12px',
 };
 
-type Props = {}
-
-export interface Product {
-    id: number;
-    name: string;
-    price: number;
-}
-
-const Home = (props: Props) => {
+const Home = () => {
     const navigate = useNavigate();
 
     const navigateToCreate = () => {
