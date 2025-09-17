@@ -18,7 +18,6 @@ const ProductForm = () => {
                     name: product.name,
                     price: product.price
                 });
-                console.log(product)
             }).catch(error => {
                 alert('Error fetching product: ' + error.message);
             })
