@@ -6,11 +6,13 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../store'
 import { login } from '../../store/authSlice'
 import { authLogin, authRegister, User } from '../../services/auth-api'
+import { useAuth } from '../../context/AuthContext'
 
 const Login = () => {
     const [form, setForm] = useState<User>({ email: '', password: '' })
     const [rememberMe, setRememberMe] = useState(false);
     const [isRegisterForm, setIsRegisterForm] = useState(false);
+    const { setNewAuthContext } = useAuth()
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -30,8 +32,9 @@ const Login = () => {
 
         authLogin(form).then((result) => {
             dispatch(login(result.data.access_token));
+            setNewAuthContext(result.data.access_token);
             navigate('/');
-        }).catch(error => {
+        }).catch((error: Error) => {
             console.log(error)
         })
     }
@@ -41,8 +44,9 @@ const Login = () => {
 
         authRegister(form).then((result) => {
             dispatch(login(result.data.access_token));
+            setNewAuthContext(result.data.access_token);
             navigate('/');
-        }).catch(error => {
+        }).catch((error: Error) => {
             console.log(error)
         })
     }

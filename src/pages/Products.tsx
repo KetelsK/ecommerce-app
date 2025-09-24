@@ -9,10 +9,11 @@ import { RootState } from '../store';
 
 const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
+
     useEffect((() => {
         getProducts().then(products => {
             setProducts(products);
-        }).catch(error => {
+        }).catch((error: Error) => {
             console.error('Error fetching products:', error);
         });
     }), [])
@@ -29,7 +30,7 @@ const Products = () => {
         deleteProduct(id).then(() => {
             setProducts(prev => prev.filter(product => product.id !== id));
 
-        }).catch(error => {
+        }).catch((error: Error) => {
             console.error('Error deleting product:', error);
         })
     }

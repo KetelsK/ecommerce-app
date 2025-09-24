@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, persistor, RootState } from '../store';
 import { authLogout } from '../services/auth-api';
 import { logout } from '../store/authSlice';
+import { useAuth } from '../context/AuthContext';
 
 const h1Style: React.CSSProperties = {
   cursor: 'pointer',
@@ -14,7 +15,7 @@ const h1Style: React.CSSProperties = {
 
 const Header = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-
+  const { clearAuthContext } = useAuth()
 
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -27,9 +28,10 @@ const Header = () => {
     authLogout().then(() => {
       dispatch(logout(undefined));
       localStorage.removeItem("persist:auth");
+      clearAuthContext();
       persistor.flush();
       navigate('/');
-    }).catch(error => {
+    }).catch((error: Error) => {
       console.log(error)
     })
   }
