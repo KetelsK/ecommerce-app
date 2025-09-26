@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Button from '../../components/Button'
-import './Login.css'
+import './Login.scss'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../store'
@@ -55,35 +55,37 @@ const Login = () => {
         // Handle forgot password
     }
     return (
-        <form action="post" className="form-container" onSubmit={isRegisterForm ? handleRegister : handleLogin}>
-            <div>
-                <label htmlFor="email">Email</label><br />
-                <input type="text" className='form-control' id="email" name="email" required onChange={handleChange} />
-            </div>
-            <div className="mt-2">
-                <label htmlFor="password">Mot de passe</label><br />
-                <input type="password" className='form-control' id="password" name="password" required onChange={handleChange} />
-            </div>
-            <div className="form-check mt-2 cursor-pointer">
-                <input className="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
-                <label className="form-check-label cursor-pointer" htmlFor="flexCheckDefault">
-                    Se souvenir de moi
-                </label>
-            </div>
+        <div className='login-page'>
+            <form action="post" className="form-container" onSubmit={isRegisterForm ? handleRegister : handleLogin}>
+                <div>
+                    <label htmlFor="email">Email</label><br />
+                    <input type="text" className='form-control' id="email" name="email" required onChange={handleChange} />
+                </div>
+                <div className="mt-2">
+                    <label htmlFor="password">Mot de passe</label><br />
+                    <input type="password" className='form-control' id="password" name="password" required onChange={handleChange} />
+                </div>
+                <div className="form-check mt-2 cursor-pointer">
+                    <input className="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
+                    <label className="form-check-label cursor-pointer" htmlFor="flexCheckDefault">
+                        Se souvenir de moi
+                    </label>
+                </div>
 
-            <Button label={isRegisterForm ? 'Créer un nouveau compte' : 'Se connecter'} style={{ marginTop: '12px', width: '100%' }}></Button>
+                <Button label={isRegisterForm ? 'Créer un nouveau compte' : 'Se connecter'} style={{ marginTop: '12px', width: '100%' }}></Button>
 
 
-            {!isRegisterForm && (
-                <>
-                    <label className='forgot-password' onClick={() => handleForgotPassword()}>Mot de passe oublié ?</label>
-                    <Button label="Créer un nouveau compte"
-                        style={{ marginTop: '12px', width: '100%', backgroundColor: 'green', border: 'none' }}
-                        onClick={() => setIsRegisterForm(true)}
-                    />
-                </>
-            )}
-        </form >
+                {!isRegisterForm && (
+                    <>
+                        <label className='forgot-password' onClick={() => handleForgotPassword()}>Mot de passe oublié ?</label>
+                        <Button label="Créer un nouveau compte"
+                            style={{ marginTop: '12px', width: '100%', backgroundColor: 'green', border: 'none' }}
+                            onClick={() => setIsRegisterForm(true)}
+                        />
+                    </>
+                )}
+            </form >
+        </div>
     )
 }
 
