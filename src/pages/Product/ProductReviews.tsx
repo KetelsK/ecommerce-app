@@ -25,7 +25,7 @@ const ProductReviews = (props: Props) => {
                 productReviews.map((review) => (
                     <div>
                         <StarRating isFixed={true} rating={review.rating}></StarRating>
-                        <b>{review.userId}</b>
+                        <b>{review.user?.email}</b>
                         <p>{review.review}</p>
                     </div>
                 ))

@@ -1,3 +1,4 @@
+import { User } from "./auth-api";
 import { api } from "./base-api";
 
 export interface ProductReview {
@@ -5,6 +6,7 @@ export interface ProductReview {
     review: string;
     rating: number;
     userId: number;
+    user?: User;
     productId: number;
 }
 
