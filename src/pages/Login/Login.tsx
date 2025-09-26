@@ -7,11 +7,17 @@ import { AppDispatch } from '../../store'
 import { login } from '../../store/authSlice'
 import { authLogin, authRegister, User } from '../../services/auth-api'
 import { useAuth } from '../../context/AuthContext'
+import LoaderError from '../../components/LoaderError/LoaderError'
+import { AxiosError } from 'axios'
+
 
 const Login = () => {
     const [form, setForm] = useState<User>({ email: '', password: '' })
     const [rememberMe, setRememberMe] = useState(false);
     const [isRegisterForm, setIsRegisterForm] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('')
     const { setNewAuthContext } = useAuth()
 
     const dispatch = useDispatch<AppDispatch>();
@@ -29,26 +35,35 @@ const Login = () => {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
+        setIsError(false);
+        setErrorMessage('');
 
         authLogin(form).then((result) => {
             dispatch(login(result.data.access_token));
             setNewAuthContext(result.data.access_token);
+            setIsLoading(false);
             navigate('/');
-        }).catch((error: Error) => {
-            console.log(error)
-        })
+        }).catch((error: AxiosError<{ message: string }>) => {
+            setIsError(true);
+            setErrorMessage(error.response?.data?.message ?? 'Une erreur est survenue');
+        });
     }
 
     const handleRegister = (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
+        setIsError(false);
+        setErrorMessage('');
 
         authRegister(form).then((result) => {
             dispatch(login(result.data.access_token));
             setNewAuthContext(result.data.access_token);
             navigate('/');
-        }).catch((error: Error) => {
-            console.log(error)
-        })
+        }).catch((error: AxiosError<{ message: string }>) => {
+            setIsError(true);
+            setErrorMessage(error.response?.data?.message ?? 'Une erreur est survenue');
+        });
     }
 
     const handleForgotPassword = () => {
@@ -56,6 +71,7 @@ const Login = () => {
     }
     return (
         <div className='login-page'>
+            <LoaderError isError={isError} isLoading={isLoading} errorMessage={errorMessage} />
             <form action="post" className="form-container" onSubmit={isRegisterForm ? handleRegister : handleLogin}>
                 <div>
                     <label htmlFor="email">Email</label><br />

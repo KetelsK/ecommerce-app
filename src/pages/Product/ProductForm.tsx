@@ -5,12 +5,15 @@ import Button from '../../components/Button';
 import AddProductReviews from './AddProductReview';
 import ProductReviews from './ProductReviews';
 import PageTitle from '../../components/PageTitle';
+import LoaderError from '../../components/LoaderError/LoaderError';
 
 const ProductForm = () => {
     const [form, setForm] = useState<Product>({ name: '', price: '' })
     const [errors, setErrors] = useState<{ name?: string, price?: string }>({});
     const [refreshReviews, setRefreshReviews] = useState(false);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('')
 
     const { id: productId } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -57,18 +60,21 @@ const ProductForm = () => {
             setErrors(newErrors);
             return;
         }
-
+        setIsError(false);
+        setIsLoading(true);
         if (isEditMode) {
             updateProduct(Number(productId), form).then(() => {
+                setIsLoading(true);
                 navigate('/');
-            }).catch((error: Error) => {
-                alert('Error updating product: ' + error.message);
+            }).catch(() => {
+                setIsError(true);
             });
         } else {
             createProduct(form).then(() => {
+                setIsLoading(true);
                 navigate('/');
-            }).catch((error: Error) => {
-                alert('Error creating product: ' + error.message);
+            }).catch(() => {
+                setIsError(true);
             });
         }
     };
@@ -79,6 +85,7 @@ const ProductForm = () => {
     return (
         <div className='product-form-page'>
             <PageTitle title={isEditMode ? 'Modifier un produit' : 'Créer un nouveau produit'} />
+            <LoaderError isError={isError} isLoading={isLoading} errorMessage={errorMessage} />
             <form onSubmit={handleSubmit} className='form-container'>
                 <div>
                     <label htmlFor="name">Nom</label><br />
