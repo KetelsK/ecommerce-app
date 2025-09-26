@@ -8,9 +8,12 @@ import { logout } from '../store/authSlice';
 import { useAuth } from '../context/AuthContext';
 
 const h1Style: React.CSSProperties = {
-  cursor: 'pointer',
-  textDecoration: 'underline',
-  marginBottom: '20px'
+  cursor:'pointer',
+  fontSize: '2.5rem',
+  fontWeight: 700,
+  color: '#2c3e50',
+  letterSpacing: '1px',
+  margin: '20px 0'
 };
 
 const Header = () => {

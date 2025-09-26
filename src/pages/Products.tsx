@@ -3,7 +3,7 @@ import { deleteProduct, getProducts, Product } from '../services/product-api';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import noProductImg from '../assets/logo.svg';
-import './Products.css';
+import './Products.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 

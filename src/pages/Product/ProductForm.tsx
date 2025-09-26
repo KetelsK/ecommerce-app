@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
 import AddProductReviews from './AddProductReview';
 import ProductReviews from './ProductReviews';
-
+import PageTitle from '../../components/PageTitle';
 
 const ProductForm = () => {
     const [form, setForm] = useState<Product>({ name: '', price: '' })
@@ -77,30 +77,27 @@ const ProductForm = () => {
         setRefreshReviews(!refreshReviews);
     }
     return (
-        <div>
-            <h2>{isEditMode ? 'Modifier un produit' : 'Créer un nouveau produit'}</h2>
-            <form onSubmit={handleSubmit}>
+        <div className='product-form-page'>
+            <PageTitle title={isEditMode ? 'Modifier un produit' : 'Créer un nouveau produit'} />
+            <form onSubmit={handleSubmit} className='form-container'>
                 <div>
-                    <label>
-                        Nom:
-                        <input type="text" name="name" value={form.name} onChange={handleChange} />
-                    </label>
+                    <label htmlFor="name">Nom</label><br />
+                    <input type="text" className='form-control' id="name" name="name" required value={form.name} onChange={handleChange} />
                     {errors.name && <span>{errors.name}</span>}
                 </div>
+
                 <div>
-                    <label>
-                        Prix:
-                        <input type="number" name="price" min={0} step="any" value={form.price} onChange={handleChange} />
-                    </label>
+                    <label htmlFor="price">Prix</label><br />
+                    <input type="number" className='form-control' min={0} step="any" value={form.price} id="price" name="price" required onChange={handleChange} />
                     {errors.price && <span>{errors.price}</span>}
                 </div>
-                <Button label={isEditMode ? 'Modifier' : 'Créer'}></Button>
+                <Button label={isEditMode ? 'Modifier' : 'Créer'} style={{ marginTop: '12px' }}></Button>
             </form>
-                <h3 className='mt-4'>Avis</h3>
+            <h3 className='mt-5'>Avis</h3>
 
-                <AddProductReviews productId={Number(productId)} onAdd={handleAddReview}></AddProductReviews>
-                <hr />
-                <ProductReviews productId={Number(productId)} refresh={refreshReviews}></ProductReviews>
+            <AddProductReviews productId={Number(productId)} onAdd={handleAddReview}></AddProductReviews>
+            <hr />
+            <ProductReviews productId={Number(productId)} refresh={refreshReviews}></ProductReviews>
 
         </div>
     )

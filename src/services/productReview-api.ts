@@ -12,7 +12,6 @@ export interface ProductReview {
 
 export const getProductReviews = async (productReviewId: number) => {
     try {
-        console.log("oui")
         const response = await api.get(`/productreview/${productReviewId}`);
         return response.data;
     } catch (error: unknown) {
