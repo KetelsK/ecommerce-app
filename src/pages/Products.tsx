@@ -6,6 +6,7 @@ import noProductImg from '../assets/logo.svg';
 import './Products.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
+import Base64Image from '../components/Base64Image';
 
 const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -44,7 +45,9 @@ const Products = () => {
         <div className='product-list'>
             {products.map((product: Product) => (
                 <div key={product.id} className='product-item' onClick={() => navigateToUpdate(product.id!)}>
-                    <img src={noProductImg} alt={product.name} className='product-image' />
+                    <div className='product-image-container'>
+                        <Base64Image src={product.image ? product.image : noProductImg} className='product-image' alt={product.name}></Base64Image>
+                    </div>
                     <div>
                         <span className='product-title'>{product.name}</span>
                         <Button style={{ float: 'right', cursor: 'pointer' }} label="+"

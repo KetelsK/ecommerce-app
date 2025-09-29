@@ -1,15 +1,14 @@
 .product-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    cursor: pointer;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 16px;
 }
 
 .product-item {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 10px;
-    width: calc(33% - 10px);
+    cursor: pointer;
 }
 
 .product-item:hover {
@@ -26,8 +25,15 @@
     font-weight: bold;
 }
 
-.product-image {
+.product-image-container {
+    display: flex;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    max-height: 200px;
     width: 100%;
-    height: auto;
+}
+
+.product-image {
+    max-width: 100%;
     margin-bottom: 10px;
 }

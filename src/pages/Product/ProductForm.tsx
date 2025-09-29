@@ -6,9 +6,10 @@ import AddProductReviews from './AddProductReview';
 import ProductReviews from './ProductReviews';
 import PageTitle from '../../components/PageTitle';
 import LoaderError from '../../components/LoaderError/LoaderError';
+import Base64Image from '../../components/Base64Image';
 
 const ProductForm = () => {
-    const [form, setForm] = useState<Product>({ name: '', price: '' })
+    const [form, setForm] = useState<Product>({ name: '', price: '', image: '' })
     const [errors, setErrors] = useState<{ name?: string, price?: string }>({});
     const [refreshReviews, setRefreshReviews] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -22,15 +23,10 @@ const ProductForm = () => {
     useEffect(() => {
         if (isEditMode && productId) {
             getProductById(Number(productId)).then(product => {
-                setForm({
-                    name: product.name,
-                    price: product.price
-                });
+                setForm(product);
             }).catch((error: Error) => {
                 alert('Error fetching product: ' + error.message);
             })
-
-
         }
     }, [productId, isEditMode]);
 
@@ -70,7 +66,12 @@ const ProductForm = () => {
                 setIsError(true);
             });
         } else {
-            createProduct(form).then(() => {
+            const newProduct: Product = {
+                name: form.name,
+                price: form.price,
+                image: form.image && form.image != '' ? form.image : undefined
+            }
+            createProduct(newProduct).then(() => {
                 setIsLoading(true);
                 navigate('/');
             }).catch(() => {
@@ -81,6 +82,19 @@ const ProductForm = () => {
 
     const handleAddReview = () => {
         setRefreshReviews(!refreshReviews);
+    }
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file && (file.type === "image/png" || file.type === "image/jpg" || file.type === "image/jpeg")) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setForm(prevForm => ({
+                    ...prevForm,
+                    image: reader.result as string
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
     }
     return (
         <div className='product-form-page'>
@@ -98,14 +112,30 @@ const ProductForm = () => {
                     <input type="number" className='form-control' min={0} step="any" value={form.price} id="price" name="price" required onChange={handleChange} />
                     {errors.price && <span>{errors.price}</span>}
                 </div>
+
+                {form.image && form.image.length > 0 && (
+                    <div>
+                        <Base64Image src={form.image!} alt="Aperçu"
+                            style={{ maxWidth: "200px" }}></Base64Image>
+                    </div>
+                )}
+
+                <div>
+                    <label htmlFor="image">Image</label><br />
+                    <input type="file" className='form-control' accept='image/png, image/jpeg, image/jpg' id="image" name="image" onChange={handleFileChange} />
+                </div>
+
                 <Button label={isEditMode ? 'Modifier' : 'Créer'} style={{ marginTop: '12px' }}></Button>
             </form>
-            <h3 className='mt-5'>Avis</h3>
+            {isEditMode && (
+                <>
+                    <h3 className='mt-5'>Avis</h3>
 
-            <AddProductReviews productId={Number(productId)} onAdd={handleAddReview}></AddProductReviews>
-            <hr />
-            <ProductReviews productId={Number(productId)} refresh={refreshReviews}></ProductReviews>
-
+                    <AddProductReviews productId={Number(productId)} onAdd={handleAddReview}></AddProductReviews>
+                    <hr />
+                    <ProductReviews productId={Number(productId)} refresh={refreshReviews}></ProductReviews>
+                </>
+            )}
         </div>
     )
 }

@@ -4,6 +4,7 @@ export interface Product {
     id?: number | undefined;
     name: string;
     price: number | '';
+    image?: string;
 }
 
 export const getProducts = async () => {
