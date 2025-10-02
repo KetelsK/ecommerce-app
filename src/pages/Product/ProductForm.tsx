@@ -7,8 +7,12 @@ import ProductReviews from './ProductReviews';
 import PageTitle from '../../components/PageTitle';
 import LoaderError from '../../components/LoaderError/LoaderError';
 import Base64Image from '../../components/Base64Image';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const ProductForm = () => {
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+
     const [form, setForm] = useState<Product>({ name: '', price: '', image: '' })
     const [errors, setErrors] = useState<{ name?: string, price?: string }>({});
     const [refreshReviews, setRefreshReviews] = useState(false);
@@ -64,6 +68,7 @@ const ProductForm = () => {
                 navigate('/');
             }).catch(() => {
                 setIsError(true);
+                setIsLoading(false);
             });
         } else {
             const newProduct: Product = {
@@ -76,6 +81,7 @@ const ProductForm = () => {
                 navigate('/');
             }).catch(() => {
                 setIsError(true);
+                setIsLoading(false);
             });
         }
     };
@@ -98,18 +104,18 @@ const ProductForm = () => {
     }
     return (
         <div className='product-form-page'>
-            <PageTitle title={isEditMode ? 'Modifier un produit' : 'Créer un nouveau produit'} />
+            <PageTitle title={!isLoggedIn ? form.name : isEditMode ? 'Modifier un produit' : 'Créer un nouveau produit'} />
             <LoaderError isError={isError} isLoading={isLoading} errorMessage={errorMessage} />
             <form onSubmit={handleSubmit} className='form-container'>
                 <div>
                     <label htmlFor="name">Nom</label><br />
-                    <input type="text" className='form-control' id="name" name="name" required value={form.name} onChange={handleChange} />
+                    <input type="text" className='form-control' id="name" name="name" required value={form.name} disabled={!isLoggedIn} onChange={handleChange} />
                     {errors.name && <span>{errors.name}</span>}
                 </div>
 
                 <div>
                     <label htmlFor="price">Prix</label><br />
-                    <input type="number" className='form-control' min={0} step="any" value={form.price} id="price" name="price" required onChange={handleChange} />
+                    <input type="number" className='form-control' min={0} step="any" value={form.price} disabled={!isLoggedIn} id="price" name="price" required onChange={handleChange} />
                     {errors.price && <span>{errors.price}</span>}
                 </div>
 
@@ -120,14 +126,19 @@ const ProductForm = () => {
                     </div>
                 )}
 
-                <div>
-                    <label htmlFor="image">Image</label><br />
-                    <input type="file" className='form-control' accept='image/png, image/jpeg, image/jpg' id="image" name="image" onChange={handleFileChange} />
-                </div>
+                {isLoggedIn && (
+                    <>
+                        <div>
+                            <label htmlFor="image">Image</label><br />
+                            <input type="file" className='form-control' accept='image/png, image/jpeg, image/jpg' id="image" name="image" onChange={handleFileChange} />
+                        </div>
+                        <Button content={isEditMode ? 'Modifier' : 'Créer'} style={{ marginTop: '12px' }}></Button>
+                    </>
+                )}
 
-                <Button label={isEditMode ? 'Modifier' : 'Créer'} style={{ marginTop: '12px' }}></Button>
+
             </form>
-            {isEditMode && (
+            {isEditMode && isLoggedIn && (
                 <>
                     <h3 className='mt-5'>Avis</h3>
 

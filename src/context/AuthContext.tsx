@@ -13,7 +13,6 @@ interface AuthContextType {
   user: User | null;
   setNewAuthContext: (token: string) => void;
   clearAuthContext: () => void;
-
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -25,7 +24,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const localStorageKey: string = "persist:auth";
-
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem(localStorageKey);
     if (token) {
@@ -35,15 +34,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(null);
       }
     }
-  }, []);
+  }, [refresh]);
 
   const setNewAuthContext = (token: string) => {
     const decoded = jwtDecode<User>(token);
     setUser(decoded);
+    setRefresh(!refresh);
   };
 
   const clearAuthContext = () => {
     setUser(null);
+    setRefresh(!refresh);
   };
 
   return <AuthContext.Provider value={{ user, setNewAuthContext, clearAuthContext }}>{children}</AuthContext.Provider>;

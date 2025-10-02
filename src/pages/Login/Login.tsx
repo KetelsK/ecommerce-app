@@ -46,6 +46,7 @@ const Login = () => {
             navigate('/');
         }).catch((error: AxiosError<{ message: string }>) => {
             setIsError(true);
+            setIsLoading(false);
             setErrorMessage(error.response?.data?.message ?? 'Une erreur est survenue');
         });
     }
@@ -62,6 +63,7 @@ const Login = () => {
             navigate('/');
         }).catch((error: AxiosError<{ message: string }>) => {
             setIsError(true);
+            setIsLoading(false);
             setErrorMessage(error.response?.data?.message ?? 'Une erreur est survenue');
         });
     }
@@ -88,13 +90,13 @@ const Login = () => {
                     </label>
                 </div>
 
-                <Button label={isRegisterForm ? 'Créer un nouveau compte' : 'Se connecter'} style={{ marginTop: '12px', width: '100%' }}></Button>
+                <Button content={isRegisterForm ? 'Créer un nouveau compte' : 'Se connecter'} style={{ marginTop: '12px', width: '100%' }}></Button>
 
 
                 {!isRegisterForm && (
                     <>
                         <label className='forgot-password' onClick={() => handleForgotPassword()}>Mot de passe oublié ?</label>
-                        <Button label="Créer un nouveau compte"
+                        <Button content="Créer un nouveau compte"
                             style={{ marginTop: '12px', width: '100%', backgroundColor: 'green', border: 'none' }}
                             onClick={() => setIsRegisterForm(true)}
                         />
