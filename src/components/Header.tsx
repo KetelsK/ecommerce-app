@@ -8,7 +8,7 @@ import { logout } from '../store/authSlice';
 import { useAuth } from '../context/AuthContext';
 
 const h1Style: React.CSSProperties = {
-  cursor:'pointer',
+  cursor: 'pointer',
   fontSize: '2.5rem',
   fontWeight: 700,
   color: '#2c3e50',
@@ -30,7 +30,6 @@ const Header = () => {
   const handleLogout = () => {
     authLogout().then(() => {
       dispatch(logout(undefined));
-      localStorage.removeItem("persist:auth");
       clearAuthContext();
       persistor.flush();
       navigate('/');
@@ -42,13 +41,18 @@ const Header = () => {
   return (
     <header className='d-flex justify-content-between align-items-center'>
       <h1 style={h1Style} onClick={navigateToHome}>E-commerce App</h1>
-      {isLoggedIn ?
-        <Button label="Se déconnecter" onClick={() => { handleLogout() }}></Button>
-        :
-        <Button label="Se connecter" onClick={() => { navigate('/login'); }}></Button>
-      }
+      <div>
 
-    </header>
+        {isLoggedIn ?
+          <>
+            <Button content="Mon panier" onClick={() => { navigate('/cart') }} className="me-2"></Button>
+            <Button content="Se déconnecter" onClick={() => { handleLogout() }}></Button>
+          </>
+          :
+          <Button content="Se connecter" onClick={() => { navigate('/login'); }}></Button>
+        }
+      </div>
+    </header >
   )
 }
 

@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./store/index";
 import { PersistGate } from 'redux-persist/integration/react';
 import { AuthProvider } from './context/AuthContext'; // Adjust the path as needed
+import Cart from './pages/Cart/Cart';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/create" element={<ProductForm />} />
                 <Route path="/update/:id" element={<ProductForm />} />
+                <Route path="/cart" element={<Cart />} />
               </Routes>
             </BrowserRouter>
           </PersistGate>

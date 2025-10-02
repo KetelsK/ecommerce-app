@@ -24,6 +24,7 @@ const AddProductReviews = (props: Props) => {
         }
         createProductReview(newProductReview).then(() => {
             props.onAdd();
+            setReviewText('');
         }).catch((error: Error) => {
             alert(error);
         })
@@ -31,8 +32,8 @@ const AddProductReviews = (props: Props) => {
     return (
         <div>
             <StarRating rating={rating} setRating={setRating}></StarRating>
-            <textarea className="form-control mt-2 mb-2" id="add-product-review" rows={3} onChange={e => setReviewText(e.target.value)}></textarea>
-            <Button label={'Ajouter un avis'} onClick={() => handleAddReview()} />
+            <textarea className="form-control mt-2 mb-2" id="add-product-review" rows={3} value={reviewText} onChange={e => setReviewText(e.target.value)}></textarea>
+            <Button content={'Ajouter un avis'} onClick={() => handleAddReview()} />
         </div>
     )
 }
