@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { JSX } from 'react'
 
 type ButtonProps = {
-    label: string;
+    content: string | JSX.Element;
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
     style?: React.CSSProperties;
+    className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, style }) => {
-    return <button className="btn btn-primary" onClick={onClick} style={style}>{label}</button>
+const Button: React.FC<ButtonProps> = ({ content: content, onClick, style, className }) => {
+    return <button className={`btn btn-primary ${className}`} onClick={onClick} style={style}>{content}</button>
 }
 
 export default Button
