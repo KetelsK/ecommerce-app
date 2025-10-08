@@ -25,6 +25,7 @@ const Products = () => {
         }).catch((error: Error) => {
             console.error('Error fetching products:', error);
         });
+        document.title = 'Accueil'
     }), [])
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const userId = useSelector((state: RootState) => state.auth.userId);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../../components/Button'
 import './Login.scss'
 import { useNavigate } from 'react-router-dom'
@@ -23,6 +23,10 @@ const Login = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = 'Se connecter'
+    }, [])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;

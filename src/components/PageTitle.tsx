@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const titleStyle: React.CSSProperties = {
     fontSize: '1.75rem',
     fontWeight: 500,
@@ -10,6 +12,11 @@ type Props = {
 
 const PageTitle = (props: Props) => {
     const title = props.title;
+
+    useEffect(() => {
+        document.title = title;
+    }, [title])
+
     return (
         <h1 style={titleStyle}>{title}</h1>
     )
